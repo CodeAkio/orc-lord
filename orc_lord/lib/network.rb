@@ -1,14 +1,11 @@
 module Network
 
   def self.email_connect(host, port, email, password)
-    require 'net/smtp'
-    
     begin
       Net::SMTP.start(host, port, email.split("@").last,
                 email, password, :login)
       { sucess: true, message: 'Valid Password!' }
     rescue Exception => ex
-      #raise ex
       case ex
         when ex.to_s.include? "Net::SMTPAuthenticationError"
           { sucess: false, message: '' }
@@ -28,6 +25,28 @@ module Network
           { sucess: false, message: '' }
       end
     end
+  end
+
+  def self.ftp_connect(server, user, password)
+    begin
+      ftp = Net::FTP.new(server)
+      ftp.login(user, password)
+      { sucess: true, message: 'Valid Password!' }
+    rescue Exception => ex
+      case ex
+        when ex.to_s.include? "Net::FTPReplyError"
+          { sucess: false, message: '' }
+        when ex.to_s.include? "Net::FTPTempError"
+          { sucess: false, message: '' }
+        when ex.to_s.include? "Net::FTPPermError"
+          { sucess: false, message: '' }
+        when ex.to_s.include? "Net::FTPProtoError"
+          { sucess: false, message: '' }
+      end
+    ensure
+      ft.exit()
+    end
+
   end
   
 end

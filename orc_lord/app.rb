@@ -1,7 +1,15 @@
+require 'net/smtp'
+require 'net/ftp'
+
 require 'pastel'
 require 'tty-prompt'
+require 'tty-progressbar'
+
 require_relative 'lib/view'
 require_relative 'lib/wordlist'
+
+$pastel = Pastel.new
+$prompt = TTY::Prompt.new
 
 View::banner
 opt = View::main_menu

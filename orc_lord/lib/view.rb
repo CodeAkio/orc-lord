@@ -3,59 +3,61 @@ module View
   def self.banner
     system('clear')
     
-    pastel = Pastel.new
-    
     File.open(File.expand_path('../../ascii/banner.txt', __FILE__), 'r') do |arq|
       while line = arq.gets
-        print pastel.green.bold(line)
+        print $pastel.green.bold(line)
       end
       puts "\n\n"
     end
   end
   
   def self.main_menu
-    pastel = Pastel.new
-    prompt = TTY::Prompt.new
-    
     choices = ['Generate a new wordlist', 'Use a local txt file as wordlist']
-    prompt.select("You don't have any wordlist, what do you want to do?", choices)
+    $prompt.select("You don't have any wordlist, what do you want to do?", choices)
   end
   
   def self.wordlist_type
-    pastel = Pastel.new
-    prompt = TTY::Prompt.new
-    
-    choices = ['Alpha', 'Numeric', 'Alphanumeric', 'Alphanumeric and special characters']
-    prompt.select("Choose what type of characteres your wordlist will use:", choices)
+    choices = ['Alpha - lower case', 'Alpha - upper case', 'Alpha - lower and upper case', 'Numeric', 'Alphanumeric', 'Alphanumeric and special characters']
+    $prompt.select("Choose what type of characteres your wordlist will use:", choices)
   end
   
   def self.min_range
-    pastel = Pastel.new
-    prompt = TTY::Prompt.new
-    
-    prompt.ask("What's the initial range size for your wordlist?", convert: :int)
+    $prompt.ask("What's the initial range size for your wordlist?", convert: :int)
   end
   
   def self.max_range
-    pastel = Pastel.new
-    prompt = TTY::Prompt.new
-    
-    prompt.ask("What's the max range size for your wordlist?", convert: :int)
+    $prompt.ask("What's the max range size for your wordlist?", convert: :int)
   end
   
-  def self.select_file
-    pastel = Pastel.new
-    prompt = TTY::Prompt.new
-    
-    prompt.ask("What's the name of your local wordlist file?", convert: :file)
+  def self.select_file  
+    $prompt.ask("What's the name of your local wordlist file?", convert: :file)
   end
   
-  def self.total_progress(chars, min, max)
-    total=0
+  class Bar
+
+    def initialize(chars, min, max)
+      @total=0
+      @total_bar = (Array min..max).each{ |i| @total += chars ** i }
+      @bar = TTY::ProgressBar.new( "|:bar|",
+        total: @total_bar#(chars, min, max)#,
+        #complete: $pastel.on_green(" "),
+        #incomplete: $pastel.on_red(" ")
+      )
+    end
+
+    #def total_bar(chars_param, min_param, max_param)
+    #  total=0
+      
+    #  for i in (min_param..max_param)
+    #    total += chars_param ** i
+    #  end
+
+    #  return total
+    #end
     
-    for i in (min..max)
-      total += chars ** i
+    def update_bar
+      @bar.advance
     end
   end
-  
+
 end
