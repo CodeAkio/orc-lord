@@ -36,24 +36,15 @@ module View
   class Bar
 
     def initialize(chars, min, max)
-      @total=0
-      @total_bar = (Array min..max).each{ |i| @total += chars ** i }
+      @total_bar=0
+      (Array min..max).each{ |i| @total_bar += chars ** i }
       @bar = TTY::ProgressBar.new( "|:bar|",
-        total: @total_bar#(chars, min, max)#,
-        #complete: $pastel.on_green(" "),
-        #incomplete: $pastel.on_red(" ")
+        total: @total_bar,
+        complete: $pastel.on_blue(" "),
+        incomplete: $pastel.on_red(" ")
       )
     end
 
-    #def total_bar(chars_param, min_param, max_param)
-    #  total=0
-      
-    #  for i in (min_param..max_param)
-    #    total += chars_param ** i
-    #  end
-
-    #  return total
-    #end
     
     def update_bar
       @bar.advance
