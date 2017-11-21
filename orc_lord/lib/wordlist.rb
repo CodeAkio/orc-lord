@@ -34,7 +34,7 @@ module Wordlist
         when 'Alphanumeric and special characters'
           @char_list = @alpha_lower + @alpha_upper + @numeric + @special_character
       end
-      
+      @bar = View::Bar.new(@char_list.count, @range_min, @range_max)
     end
 
     
@@ -60,6 +60,7 @@ module Wordlist
                 @vertical_pointer = 0
               end
             write_on_file(@word)
+            @bar.update_bar
           #If it don't arrive the last value of character at the last element off array in line,
           #this will jump one to left and verify if it's the last character:
           #1. if it's not the last character, he will incremente to the next character in this
@@ -68,6 +69,7 @@ module Wordlist
           else
             @word = carry(@word, @horizontal_pointer -1, @char_list)
             write_on_file(@word)
+            @bar.update_bar
           end
         else
           @current_range += 1
@@ -75,6 +77,7 @@ module Wordlist
           @current_range.times{|e| @word[e] = @char_list.first}
         end
       end
+      puts 'Wordlist created! You can see the file in ~/output/wordlist.txt'
     end
     
     def write_on_file(word)

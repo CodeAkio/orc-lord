@@ -41,13 +41,14 @@ module View
       @bar = TTY::ProgressBar.new( "|:bar|",
         total: @total_bar,
         complete: $pastel.on_blue(" "),
-        incomplete: $pastel.on_red(" ")
+        incomplete: $pastel.on_red(" "),
+        width: 100
       )
     end
 
     
     def update_bar
-      @bar.advance
+      @bar.current += 1
     end
   end
 
