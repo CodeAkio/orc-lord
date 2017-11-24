@@ -7,34 +7,11 @@ module Wordlist
       @range_max = max
       @word = []
       @word_list = []
+      @char_list, @qt_char = generate_char_list(type)
       @horizontal_pointer = @range_min - 1
       @vertical_pointer = 1
       @current_range = @range_min
-      @alpha_lower = Array 'a'..'z'
-      @alpha_upper = Array 'A'..'Z'
-      @numeric = Array '0'..'9'
-      @special_character = ['\'', '\"', '!', '@', '#', '$', '%', '&', '*',\
-          '(', ')', '-', '_', '+', '=', ',', '.', ';', ':', '?', '/',\
-          '{', '}', '[', ']', '\\', '|', '¬', '¹', '²', '³', '£', '¢',\
-          '´', '`', '§', 'ª', 'º', '°', '\^', '~']
-      
-      case type
-        #Define what characters will be used to create the word list,
-        #based on user choice.
-        when 'Alpha - lower case'
-          @char_list = @alpha_lower
-        when 'Alpha - upper case'
-          @char_list = @alpha_upper
-        when 'Alpha - lower and upper case'
-          @char_list = @alpha_lower + @alpha_upper
-        when 'Numeric'
-          @char_list = @numeric
-        when 'Alphanumeric'
-          @char_list = @alpha_lower + @alpha_upper + @numeric
-        when 'Alphanumeric and special characters'
-          @char_list = @alpha_lower + @alpha_upper + @numeric + @special_character
-      end
-      @bar = View::Bar.new(@char_list.count, @range_min, @range_max)
+      @bar = View::Bar.new(@qt_char, @range_min, @range_max)
     end
 
     
@@ -79,6 +56,7 @@ module Wordlist
       end
       puts 'Wordlist created! You can see the file in ~/output/wordlist.txt'
     end
+
     
     def write_on_file(word)
       word = word.join
@@ -87,6 +65,7 @@ module Wordlist
         f.puts(word)
       }
     end
+
     
     def carry(arr, hor_pointer, char_list)
       if arr[hor_pointer] != char_list.last
@@ -98,6 +77,36 @@ module Wordlist
       else
         return carry(arr, hor_pointer -1, char_list)
       end
+    end
+
+
+    def generate_char_list(type_char_list)
+      alpha_lower = Array 'a'..'z'
+      alpha_upper = Array 'A'..'Z'
+      numeric = Array '0'..'9'
+      special_character = ['\'', '\"', '!', '@', '#', '$', '%', '&', '*',\
+          '(', ')', '-', '_', '+', '=', ',', '.', ';', ':', '?', '/',\
+          '{', '}', '[', ']', '\\', '|', '¬', '¹', '²', '³', '£', '¢',\
+          '´', '`', '§', 'ª', 'º', '°', '\^', '~']
+      char_list = []
+      
+      if type_char_list.include? 'alpha_low'
+        char_list += alpha_lower
+      end
+
+      if type_char_list.include? 'alpha_up'
+        char_list += alpha_upper
+      end
+
+      if type_char_list.include? 'num'
+        char_list += numeric
+      end
+
+      if type_char_list.include? 'special'
+        char_list += special_character
+      end
+
+      return char_list, char_list.count
     end
     
     
