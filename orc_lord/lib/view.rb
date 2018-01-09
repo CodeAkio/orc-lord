@@ -13,17 +13,28 @@ module View
 
   
   def self.main_menu
-    choices = ['Generate a new wordlist', 'Use a local txt file as wordlist']
-    $prompt.select("You don't have any wordlist, what do you want to do?", choices)
+    choices = {'Generate a new wordlist' => :gen_wl,
+               'Windows Brute Force Attack' => :win_bfa,
+               'Linux Brute Force Attack' => :linux_bfa,
+               'Mac OS Brute Force Attack' => :mac_bfa,
+               'Wi-Fi Brute Force Attack' => :wifi_bfa,
+               'HTTP Brute Force Attack' => :http_bfa,
+               'FTP Brute Force Attack' => :ftp_bfa,
+               'SMTP Brute Force Attack' => :smtp_bfa,
+               'SSH Brute Force Attack' => :ssh_bfa,
+               'Web Brute Force Attack' => :web_bfa,
+               'Router Brute Force Attack' => :router_bfa
+              }
+    $prompt.select("Choose one option below:", choices)
   end
 
 
   def self.wordlist_type
     choices = {
-              'Alpha - lower case' => 'alpha_low',
-              'Alpha - upper case' => 'alpha_up',
-              'Numeric' => 'num',
-              'special characters' => 'special'
+              'Alpha - lower case' => :alpha_low,
+              'Alpha - upper case' => :alpha_up,
+              'Numeric' => :numeric,
+              'special characters' => :special
               }
 
     $prompt.multi_select("Choose what type of characteres your wordlist will use:", choices)

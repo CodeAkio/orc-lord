@@ -90,19 +90,19 @@ module Wordlist
           '´', '`', '§', 'ª', 'º', '°', '\^', '~']
       char_list = []
       
-      if type_char_list.include? 'alpha_low'
+      if type_char_list.include? :alpha_low
         char_list += alpha_lower
       end
 
-      if type_char_list.include? 'alpha_up'
+      if type_char_list.include? :alpha_up
         char_list += alpha_upper
       end
 
-      if type_char_list.include? 'num'
+      if type_char_list.include? :numeric
         char_list += numeric
       end
 
-      if type_char_list.include? 'special'
+      if type_char_list.include? :special
         char_list += special_character
       end
 
